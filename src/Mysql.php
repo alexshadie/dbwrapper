@@ -30,7 +30,7 @@ class Mysql implements DBInterface
     {
         $keys = array_keys($data);
         $sql = "INSERT INTO `{$table}` " .
-            "(" . implode(', ', $keys) . ") " .
+            "(" . implode(', ', array_map(function($item) {return "`{$item}`";}, $keys)) . ") " .
             "VALUES " .
             "(" . implode(', ', array_map(function ($item) {
                 return ":" . $item;
