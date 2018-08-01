@@ -25,6 +25,7 @@ class Mysql implements DBInterface
      * @param string $table
      * @param array $data
      * @return int
+     * @throws \Exception
      */
     public function insert(string $table, array $data): int
     {
@@ -47,7 +48,7 @@ class Mysql implements DBInterface
         }
 
         if (!$stmt->execute()) {
-            return false;
+            throw new \Exception($stmt->errorInfo()[2], $stmt->errorInfo()[1]);
         }
         $result = $this->db->lastInsertId();
         if (!$result) {
