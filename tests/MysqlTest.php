@@ -24,6 +24,17 @@ class MysqlTest extends DbTestCase
         );
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionCode 42S02
+     * @expectedExceptionMessage SQLSTATE[42S02]
+     */
+    public function testInsertInvalid()
+    {
+        $this->mysql->insert('mysql_test123', ['field' => 'field_N']);
+    }
+
+
     public function testQueryOne()
     {
         $sql = "SELECT `field` FROM `mysql_test` WHERE `id` = :id";
