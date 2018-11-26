@@ -11,6 +11,8 @@ class Mysql implements DBInterface
     private $debugLog = [];
     /** @var bool */
     private $debug = false;
+    /** @var bool */
+    private $isTransactionStarted = false;
 
     /**
      * Mysql constructor.
@@ -151,6 +153,44 @@ class Mysql implements DBInterface
     public function getDebugLog(): array
     {
         return $this->debugLog;
+    }
+
+    public function isTransactionStarted(): bool
+    {
+        return $this->isTransactionStarted;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function startTransaction(): void
+    {
+        $this->query("START TRANSACTION");
+        $this->isTransactionStarted = true;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function commit(): void
+    {
+        if (!$this->isTransactionStarted) {
+            return;
+        }
+        $this->query("COMMIT");
+        $this->isTransactionStarted = false;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function rollback(): void
+    {
+        if (!$this->isTransactionStarted) {
+            return;
+        }
+        $this->query("ROLLBACK");
+        $this->isTransactionStarted = false;
     }
 
 
