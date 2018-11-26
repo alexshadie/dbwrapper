@@ -38,4 +38,12 @@ interface DBInterface
      * @return array
      */
     public function queryAll(string $sql, array $params = []): array;
+
+    public function isTransactionStarted(): bool;
+
+    public function startTransaction(): void;
+
+    public function commit(): void;
+
+    public function rollback(): void;
 }
